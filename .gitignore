@@ -1,0 +1,5 @@
+static/upload/
+dist/
+*.DS_Store
+*.pyc
+*.tmproj
