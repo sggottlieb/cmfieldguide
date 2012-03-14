@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form method="GET" action=".">
+        {{form.as_p}}
+        <input type="submit" value="submit">
+    </form>
+    <table>
+        <tr>
+            <th>Platform</th>
+            <th>Confidence</th>
+        </tr>    
+    {% for result in results %}
+        <tr>
+            <td>{{result.0}}</td>
+            <td>{{result.1}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    
+{% endblock main %}
