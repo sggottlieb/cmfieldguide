@@ -1,6 +1,6 @@
 from django.test import TestCase
 from cmfieldguide.cmsdetector.signatures import BaseSignature
-
+from cmfieldguide.cmsdetector.engine import get_cms_names
 
 
 class TestBase(TestCase):
@@ -28,14 +28,49 @@ class TestBase(TestCase):
         self.assertFalse(self.sig.url_exists(bad_url))
 
 
-class TestDrupal(TestCase):
-    from cmfieldguide.cmsdetector.signatures.drupal import Signature as DrupalSignature
-    sig = DrupalSignature()
+class TestSignatures(TestCase):
     
-    def test_verified_true_site(self):
-        url = "http://drupal.org"
-        self.assertEquals(self.sig.run(url),1)
+    
+    def setUp(self):
+        self.sig_list = []
         
-    def test_verified_false_site(self):
-        url = "http://plone.org/"
-        self.assertEquals(self.sig.run(url),0)
+        for cms_name in get_cms_names():
+            self.sig_list.append(__import__('cmfieldguide.cmsdetector.signatures.' + cms_name, 
+                fromlist='Signature').Signature())
+    
+    def test_metadata_override(self):
+        """
+        This test verifies that the metadata have been overridden
+        """
+        base = BaseSignature()
+        
+        for sig in self.sig_list:
+            self.assertNotEqual(sig.NAME, base.NAME)
+            self.assertNotEqual(sig.WEBSITE, base.WEBSITE)
+            self.assertNotEqual(sig.KNOWN_POSITIVE, base.KNOWN_POSITIVE)
+            
+    def test_known_positives(self):
+        """
+        This test verifies that a confirmed site returns a positive
+        """
+        for sig in self.sig_list:
+            if not sig.run(sig.KNOWN_POSITIVE):
+                message = '%s should be return a true for %s' % (sig.KNOWN_POSITIVE, sig.NAME)
+                self.fail(message)
+            
+            
+    def test_known_negative(self):
+        """
+        This test verifies that a site not running the software returns
+        a negative.
+        """
+        #We know that Google is not running any of these CMSs
+        known_negative = 'http://www.google.com'
+        
+        for sig in self.sig_list:
+            if sig.run(known_negative):
+                message = 'We know %s is not a %s but the signature returned a positive' \
+                    % (known_negative, sig.NAME)
+                self.fail(message)
+            
+            

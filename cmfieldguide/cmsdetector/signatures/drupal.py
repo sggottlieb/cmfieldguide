@@ -5,20 +5,19 @@ from cmfieldguide.cmsdetector.signatures import BaseSignature
 class Signature(BaseSignature):
     
     NAME = 'Drupal'
+    WEBSITE = 'http://drupal.org'
+    KNOWN_POSITIVE = 'http://drupal.org/'
+    
 
     def test_has_sites_path(self, url):
-        """Has a /sites/all path in HTML."""
-        return 0
-
-    def test_has_node_class_on_body_tag(self, url):
-        """Has a class containing 'node' on the BODY tag."""
-        return 0
-    
-    def test_is_drupal_org(self,url):
         """
-        This is kind of cheating
+        Drupal sites manage themes under a path that 
+        starts with /sites/all or sites/default.
         """
-        if url == 'http://drupal.org/':
-            return 100
+        if self.page_contains_pattern(url, "/sites/all"):
+            return 1
+        elif self.page_contains_pattern(url, "/sites/default"):
+            return 1
         else:
-            return 0
+            return 0    
+

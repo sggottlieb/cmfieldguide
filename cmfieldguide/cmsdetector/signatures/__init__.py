@@ -5,7 +5,9 @@ import re
 
 class BaseSignature(object):
     
-    NAME = "Base Signature Class.  Override"
+    NAME = 'Base Signature Class.  OVERRIDE'
+    WEBSITE = 'http://www.acme.org OVERRIDE'
+    KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
     
     def run(self, url):
         """
@@ -56,13 +58,17 @@ class BaseSignature(object):
         """
         result = False
         rgx = re.compile(pattern)
-        page = urllib2.urlopen(url)
-        for line in page:
-            if rgx.search(line):
-                result = True
-                break
         
-        page.close()
+        try:
+            page = urllib2.urlopen(url)
+            for line in page:
+                if rgx.search(line):
+                    result = True
+                    break
+        
+            page.close()
+        except urllib2.HTTPError, IOError:
+            pass
         
         return result
         
