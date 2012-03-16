@@ -89,6 +89,10 @@ class BaseSignature(object):
         
         page = self.get_page(url)
 
+        # Just in case it threw an error
+        if not page:
+            return False
+
         for line in page:
             if rgx.search(line):
                 result = True
