@@ -8,6 +8,8 @@ class BaseSignature(object):
     NAME = 'Base Signature Class.  OVERRIDE'
     WEBSITE = 'http://www.acme.org OVERRIDE'
     KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
+
+    cached_pages = {}
     
     def run(self, url):
         """
@@ -39,7 +41,20 @@ class BaseSignature(object):
                 break
         
         return confidence_score/len(tests)
-        
+
+    def get_page(self, url):
+        """
+        Returns a page from local cache if we have it, otherwise requests it and puts it in local cache.
+        """
+
+        if self.cached_pages.has_key(url):
+            return self.cached_pages[url]
+
+        page = urllib2.urlopen(url, timeout=2)
+        self.cached_pages[url] = page
+
+        return page
+
     def get_url_stem(self, url):
         """
         Returns the stem of the URL.  
@@ -88,7 +103,32 @@ class BaseSignature(object):
             pass
         
         return result
-        
+
+    def is_dot_net_webforms(self, url):
+        """
+        Returns True is the URL has .Net markers.
+        """
+        result = False
+
+        page = self.get_page(url)
+
+        if 'x-powered-by' in page.headers:
+            if page.headers['x-powered-by'] == 'ASP.NET':
+                result = True
+
+        pattern = 'id="aspnetform"'
+        if page_contains_pattern(url, pattern):
+            result = True
+
+        pattern = 'ct100_'
+        if page_contains_pattern(url, pattern):
+            result = True
+
+        pattern = 'name="__VIEWSTATE"'
+        if page_contains_pattern(url, pattern):
+            result = True
+
+        return result
     
 class SampleSignature(BaseSignature):
     """
