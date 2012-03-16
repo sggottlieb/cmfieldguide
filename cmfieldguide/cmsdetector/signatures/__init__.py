@@ -47,11 +47,24 @@ class BaseSignature(object):
         Returns a page from local cache if we have it, otherwise requests it and puts it in local cache.
         """
 
+        # If it's in local cache, just return it
         if self.cached_pages.has_key(url):
             return self.cached_pages[url]
 
-        page = urllib2.urlopen(url, timeout=2)
+        # Get it
+        try:
+            page = urllib2.urlopen(url, timeout=2)
+        except urllib2.HTTPError, IOError:
+            return False
+
+        # Technically, any status code starting with "2" is valid...
+        if str(page.getcode())[0] != '2':
+            return False
+
+        # Put it in the cache
         self.cached_pages[url] = page
+
+        # QUESTION: do we have to call page.close?  I didn't find much doc on this.
 
         return page
 
@@ -74,17 +87,13 @@ class BaseSignature(object):
         result = False
         rgx = re.compile(pattern)
         
-        try:
-            page = urllib2.urlopen(url)
-            for line in page:
-                if rgx.search(line):
-                    result = True
-                    break
-        
-            page.close()
-        except urllib2.HTTPError, IOError:
-            pass
-        
+        page = self.get_page(url)
+
+        for line in page:
+            if rgx.search(line):
+                result = True
+                break
+
         return result
         
     def url_exists(self, url):
@@ -92,17 +101,7 @@ class BaseSignature(object):
         Returns True if the URL exists
         
         """
-        result = False
-        
-        try:
-            page = urllib2.urlopen(url, timeout=2)
-            if page.getcode() in (200,):
-                result = True
-            page.close()
-        except IOError:
-            pass
-        
-        return result
+        return self.get_page(url)
 
     def is_dot_net_webforms(self, url):
         """
