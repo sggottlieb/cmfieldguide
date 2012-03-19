@@ -58,17 +58,21 @@ class BaseSignature(object):
         """
         result = False
         rgx = re.compile(pattern)
-        
+       
         try:
             page = urllib2.urlopen(url)
-            for line in page:
+        except urllib2.HTTPError, error:
+            page = error
+        except IOError:
+            page = None
+            
+        if page:
+            for line in page.readlines():
                 if rgx.search(line):
                     result = True
-                    break
-        
+                    break    
             page.close()
-        except urllib2.HTTPError, IOError:
-            pass
+        
         
         return result
         
