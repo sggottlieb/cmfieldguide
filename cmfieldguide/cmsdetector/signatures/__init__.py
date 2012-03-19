@@ -8,6 +8,8 @@ class BaseSignature(object):
     NAME = 'Base Signature Class.  OVERRIDE'
     WEBSITE = 'http://www.acme.org OVERRIDE'
     KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
+
+    cached_pages = {}
     
     def run(self, url):
         """
@@ -39,7 +41,33 @@ class BaseSignature(object):
                 break
         
         return confidence_score/len(tests)
-        
+
+    def get_page(self, url):
+        """
+        Returns a page from local cache if we have it, otherwise requests it and puts it in local cache.
+        """
+
+        # If it's in local cache, just return it
+        if self.cached_pages.has_key(url):
+            return self.cached_pages[url]
+
+        # Get it
+        try:
+            page = urllib2.urlopen(url, timeout=2)
+        except urllib2.HTTPError, IOError:
+            return False
+
+        # Technically, any status code starting with "2" is valid...
+        if str(page.getcode())[0] != '2':
+            return False
+
+        # Put it in the cache
+        self.cached_pages[url] = page
+
+        # QUESTION: do we have to call page.close?  I didn't find much doc on this.
+
+        return page
+
     def get_url_stem(self, url):
         """
         Returns the stem of the URL.  
@@ -74,6 +102,7 @@ class BaseSignature(object):
             page.close()
         
         
+
         return result
         
     def url_exists(self, url):
@@ -81,18 +110,33 @@ class BaseSignature(object):
         Returns True if the URL exists
         
         """
+        return self.get_page(url)
+
+    def is_dot_net_webforms(self, url):
+        """
+        Returns True is the URL has .Net markers.
+        """
         result = False
-        
-        try:
-            page = urllib2.urlopen(url, timeout=2)
-            if page.getcode() in (200,):
+
+        page = self.get_page(url)
+
+        if 'x-powered-by' in page.headers:
+            if page.headers['x-powered-by'] == 'ASP.NET':
                 result = True
-            page.close()
-        except IOError:
-            pass
-        
+
+        pattern = 'id="aspnetform"'
+        if page_contains_pattern(url, pattern):
+            result = True
+
+        pattern = 'ct100_'
+        if page_contains_pattern(url, pattern):
+            result = True
+
+        pattern = 'name="__VIEWSTATE"'
+        if page_contains_pattern(url, pattern):
+            result = True
+
         return result
-        
     
 class SampleSignature(BaseSignature):
     """
