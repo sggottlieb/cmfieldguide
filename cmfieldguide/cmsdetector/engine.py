@@ -1,25 +1,28 @@
 import signatures
 import pkgutil
+from operator import itemgetter, attrgetter
+
+from cmfieldguide.cmsdetector.signatures import PageCache
 
 def test(url):
+    
+    page_cache = PageCache()
+    
+    platforms = []
+    for platform_name in get_platform_names():
+        platforms.append(__import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
+            fromlist='Signature').Signature(url, page_cache))
+    
+    return sorted(platforms, key=attrgetter('confidence'), reverse=True)
 
-    results = []
-    for cms_name in get_cms_names():
-        signature = __import__('cmfieldguide.cmsdetector.signatures.' + cms_name, 
-            fromlist='Signature').Signature()
-        
-        results.append((signature.NAME, signature.run(url)))
 
-    return results
+def get_platform_names():
 
-
-def get_cms_names():
-
-    results = []
+    names = []
     
     package = signatures
     for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
-        results.append(modname)
+        names.append(modname)
 
-    return results
+    return names
 

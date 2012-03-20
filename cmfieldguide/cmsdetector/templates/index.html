@@ -5,15 +5,38 @@
         {{form.as_p}}
         <input type="submit" value="submit">
     </form>
+    <div>
+        {% ifequal platforms.0.confidence 0%}
+        <p>This site does not match any of our signatures</p>
+        
+        {% else %}
+        <p>Most likely platform: {{platforms.0.NAME}}</p>
+        {% endifequal %}
+    </div>
+    
     <table border="1">
         <tr>
             <th>Platform</th>
+            <th>Website</th>
             <th>Confidence</th>
+            <th>Tests</th>
         </tr>    
-    {% for result in results %}
+    {% for platform in platforms %}
         <tr>
-            <td>{{result.0}}</td>
-            <td>{{result.1}}</td>
+            <td>{{platform.NAME}}</td>
+            <td>{{platform.WEBSITE}}</td>
+            <td>{{platform.confidence}}</td>
+            <td>
+                <ul>
+                    {% for result in platform.results %}
+                        <li>
+                            <p>{{result.name}}: {{result.score}}</p>
+                            <p>{{result.description}}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        
         </tr>
     {% endfor %}
     </table>

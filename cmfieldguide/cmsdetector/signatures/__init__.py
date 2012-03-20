@@ -3,153 +3,168 @@ __author__ = 'Deane Barker'
 import urllib2
 import re
 
-class BaseSignature(object):
+def get_url_stem(url):
+    """
+    Returns the stem of the URL.  
     
-    NAME = 'Base Signature Class.  OVERRIDE'
-    WEBSITE = 'http://www.acme.org OVERRIDE'
-    KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
-
-    cached_pages = {}
+    For example, if the URL is http://www.acme.com/foo/bar, 
     
-    def run(self, url):
-        """
-        Runs through all of the test methods (identified by beginning
-        with the string "test") and returns a confidence score.
-        """
-        
-        confidence_score = 0
-        
-        tests = []
-        for m in dir(self):
-            if m.startswith('test'):
-                tests.append(getattr(self, m))
-        
-        if not len(tests):
-            raise SystemError("There are no tests!")
-                
-        for test in tests:
-            conf = test(url)        
-            if conf == 100:
-                # This test is absolutely certain
-                return 1
-            elif conf > 0:
-                # Test found a clue
-                confidence_score += 1
-            elif conf < 0:
-                # Test ruled out this CMS
-                confidence_score = 0
-                break
-        
-        return confidence_score/len(tests)
+    The stem would be http://www.acme.com
+    
+    """
+    
+    return '/'.join(url.split('/')[:3])
 
-    def get_page(self, url):
-        """
-        Returns a page from local cache if we have it, otherwise requests it and puts it in local cache.
-        """
+def namify(m):
+    """Turns a test name into a name"""
+    
+    return ' '.join(m.split('_')[1:]).title()
 
-        # If it's in local cache, just return it
-        if self.cached_pages.has_key(url):
-            return self.cached_pages[url]
 
-        # Get it
+class PageCache(dict):
+    """
+    This is just a basic dictionary object.  I am 
+    overriding it to add a new page if the dictionary 
+    doesn't already have a page for the URL.
+    """
+    def __init__(self, *args):
+        dict.__init__(self, args)
+    
+    def __getitem__(self, key):
+        """"
+        Retrieves a page. If the page has already
+        been retrieved, this method pulls it from cache.
+        """
+        if not key in self.items():
+            dict.__setitem__(self, key, Page(key))
+    
+        return dict.__getitem__(self, key)
+
+class Page(object):
+    """
+    This class is used to read a page from a URL and store its contents.
+    It also contains methods for examining the contents of a page.
+    """
+    html = ''
+    status_code = 0
+    
+    def __init__(self, url):
+        
         try:
             page = urllib2.urlopen(url, timeout=2)
-        except urllib2.HTTPError, IOError:
-            return False
-
-        # Technically, any status code starting with "2" is valid...
-        if str(page.getcode())[0] != '2':
-            return False
-
-        # Put it in the cache
-        self.cached_pages[url] = page
-
-        # QUESTION: do we have to call page.close?  I didn't find much doc on this.
-
-        return page
-
-    def get_url_stem(self, url):
-        """
-        Returns the stem of the URL.  
-        
-        For example, if the URL is http://www.acme.com/foo/bar, 
-        
-        The stem would be http://www.acme.com
-        
-        """
-        
-        return '/'.join(url.split('/')[:3])
-        
-    def page_contains_pattern(self, url, pattern):
-        """
-        Returns True if the given page contains a particular string.
-        """
-        result = False
-        rgx = re.compile(pattern)
-       
-        try:
-            page = urllib2.urlopen(url)
         except urllib2.HTTPError, error:
             page = error
         except IOError:
             page = None
             
         if page:
+            self.status_code = page.getcode()
+            self.headers = page.headers
+            
             for line in page.readlines():
-                if rgx.search(line):
-                    result = True
-                    break    
+                self.html += line    
             page.close()
+            
+    def exists(self):
+        """
+        Return True if a request for this page 
+        returned a status code in the 200s
+        """
         
+        if str(self.status_code)[0] == '2':
+            return True
+        else:
+            return False  
+    
+    def contains_pattern(self, pattern):
+        """
+        Returns True if the given page contains a particular string.
+        """
+        result = False
+        rgx = re.compile(pattern)
         
+        if self.html and rgx.search(self.html):
+                result = True
+        
+        return result 
 
-        return result
+    def contains_any_pattern(self, patterns):
+        """
+        Returns a True if any of the patterns are found in the page
+        """
         
-    def url_exists(self, url):
-        """
-        Returns True if the URL exists
+        for pattern in patterns:
+            if self.contains_pattern(pattern):
+                return True
         
+        return False
+        
+        
+    def contains_all_patterns(self,patterns):
         """
-        return self.get_page(url)
-
-    def is_dot_net_webforms(self, url):
+        Returns a false unless all of the patterns are found in the page
         """
-        Returns True is the URL has .Net markers.
+        
+        for pattern in patterns:
+            if not self.contains_pattern(pattern):
+                return False
+        
+        return True
+        
+    
+    def is_dot_net_webforms(self):
+        """
+        Returns True is the URL has .Net WebForm markers.
         """
         result = False
 
-        page = self.get_page(url)
-
-        if 'x-powered-by' in page.headers:
-            if page.headers['x-powered-by'] == 'ASP.NET':
-                result = True
-
-        pattern = 'id="aspnetform"'
-        if page_contains_pattern(url, pattern):
+        if 'x-powered-by' in self.headers and self.headers['x-powered-by'] == 'ASP.NET':
             result = True
 
-        pattern = 'ct100_'
-        if page_contains_pattern(url, pattern):
-            result = True
-
-        pattern = 'name="__VIEWSTATE"'
-        if page_contains_pattern(url, pattern):
+        if self.contains_any_pattern(('id="aspnetform"','ct100_','name="__VIEWSTATE"')):
             result = True
 
         return result
+
+
+
+class BaseSignature(object):
     
-class SampleSignature(BaseSignature):
-    """
-    SampleSignature is a very basic example of how to extend BaseSignature
+    NAME = 'Base Signature Class.  OVERRIDE'
+    WEBSITE = 'http://www.acme.org OVERRIDE'
+    KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
     
-    """
-    
-    def test_anything(self, url):
+    def __init__(self, url, page_cache):
         """
-        Just verifies that the url string is not null
+        Runs through all of the test methods (identified by beginning
+        with the string "test") and returns a confidence score.
+        """
         
-        """
-        if url:
-            return True
-        else:
-            return False
+        self.results = []
+        confidence_score = 0
+        self.page_cache = page_cache
+        
+        for m in dir(self):
+            if m.startswith('test'):
+                test = getattr(self, m)
+                result = {
+                    'name':namify(m),
+                    'score':test(url),
+                    'description':test.__doc__
+                }
+                self.results.append(result)
+        
+        self.confidence = self.get_confidence()
+        
+    def get_confidence(self):
+        score = 0
+        
+        for result in self.results:
+            if result['score'] == 100:
+                return 1
+            elif result['score'] < 0:
+                return 0
+            elif result['score'] == 1:
+                score += 1
+                
+        return score/len(self.results)

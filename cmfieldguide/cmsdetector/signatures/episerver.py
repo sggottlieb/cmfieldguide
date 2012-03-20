@@ -4,7 +4,7 @@ This signature tests for clues that a site is running on EPiServer
 """
 
 
-from cmfieldguide.cmsdetector.signatures import BaseSignature
+from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem
 
 class Signature(BaseSignature):
 
@@ -12,18 +12,16 @@ class Signature(BaseSignature):
     WEBSITE = 'http://episerver.com'
     KNOWN_POSITIVE = 'http://episerver.com'
 
-    def test_has_episerverlogin(self, url):
+    def test_has_episerver_login(self, url):
         """
-        EPiServer sites usually have a login page under the url /util/login.aspx
+        EPiServer sites usually have a login page under the url /util/login.aspx.
+        
+        The existence of this page yields a high confidence of EPiServer being used.
         """
-
-        if self.url_exists(self.get_url_stem(url) + '/util/login.aspx'):
+        
+        if self.page_cache[get_url_stem(url) + '/util/login.aspx'].exists():
             return 100
-
-    def test_is_dot_net_webforms(self, url):
-        """
-        EPiServer is a .Net CMS
-        """
-
-        if self.is_dot_net_webforms(self, url):
-            return 1
+        else:
+            return 0
+            
+    

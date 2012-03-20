@@ -6,16 +6,17 @@ from forms import SiteForm
 def index(request):
 
     url = ''
-    results = None
+    platforms = []
     if 'url' in request.GET:
         form = SiteForm(data=request.GET)
         if form.is_valid():
-            results = engine.test(form.cleaned_data['url'])
+            platforms = engine.test(form.cleaned_data['url'])
+            
     else:
         form = SiteForm()
-
+    
     return render_to_response('index.html', 
         {'form':form,
-         'results':results
+         'platforms':platforms
         },
         context_instance=RequestContext(request))
