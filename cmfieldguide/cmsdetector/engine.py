@@ -13,6 +13,7 @@ def test(url):
         platforms.append(__import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
             fromlist='Signature').Signature(url, page_cache))
     
+    
     return sorted(platforms, key=attrgetter('confidence'), reverse=True)
 
 

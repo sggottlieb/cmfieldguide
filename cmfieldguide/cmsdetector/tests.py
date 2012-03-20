@@ -26,7 +26,7 @@ class TestPage(TestCase):
         """
         
         good_page = Page('http://www.google.com')
-        bad_page = Page('http://yomamma.blendinteractive.com')
+        bad_page = Page('http://www.contenthere.net/yomama')
         
         self.assertTrue(good_page.exists())
         self.assertFalse(bad_page.exists())
@@ -43,16 +43,6 @@ class TestSignaturePositives(TestCase):
                 fromlist='Signature')
             self.sig_list.append(sig.Signature(sig.Signature.KNOWN_POSITIVE, page_cache))
     
-    def test_metadata_override(self):
-        """
-        This test verifies that the metadata have been overridden
-        """
-        base = BaseSignature()
-        
-        for sig in self.sig_list:
-            self.assertNotEqual(sig.NAME, base.NAME)
-            self.assertNotEqual(sig.WEBSITE, base.WEBSITE)
-            self.assertNotEqual(sig.KNOWN_POSITIVE, base.KNOWN_POSITIVE)
             
     def test_known_positives(self):
         """

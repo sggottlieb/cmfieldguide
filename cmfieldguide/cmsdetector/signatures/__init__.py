@@ -1,7 +1,7 @@
-__author__ = 'Deane Barker'
-
+from __future__ import division
 import urllib2
 import re
+
 
 def get_url_stem(url):
     """
@@ -160,11 +160,11 @@ class BaseSignature(object):
         score = 0
         
         for result in self.results:
-            if result['score'] == 100:
+            if result['score'] == 1:
+                score += 1
+            elif result['score'] == 100:
                 return 1
             elif result['score'] < 0:
                 return 0
-            elif result['score'] == 1:
-                score += 1
                 
         return score/len(self.results)
