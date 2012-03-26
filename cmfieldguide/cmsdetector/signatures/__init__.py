@@ -35,7 +35,7 @@ class PageCache(dict):
         Retrieves a page. If the page has already
         been retrieved, this method pulls it from cache.
         """
-        if not key in self.items():
+        if not key in dict.keys(self):
             dict.__setitem__(self, key, Page(key))
     
         return dict.__getitem__(self, key)
