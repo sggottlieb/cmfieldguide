@@ -48,7 +48,10 @@ class Page(object):
     html = ''
     status_code = 0
     
+    
     def __init__(self, url):
+        
+        self.url = url
         
         try:
             page = urllib2.urlopen(url, timeout=2)
@@ -126,12 +129,20 @@ class Page(object):
 
         return result
 
-
+    def has_php_credits(self):
+        """
+        Checks for the easter egg where the PHP credits page 
+        appears when you add the query string:
+        ?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000
+        """
+        credits_page = Page(self.url + "?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000")
+        return credits_page.contains_pattern('PHP Credits') 
 
 class BaseSignature(object):
     
     NAME = 'Base Signature Class.  OVERRIDE'
     WEBSITE = 'http://www.acme.org OVERRIDE'
+    TECHNOLOGY = 'unknown'
     KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
     
     def __init__(self, url, page_cache):
@@ -143,18 +154,33 @@ class BaseSignature(object):
         self.results = []
         confidence_score = 0
         self.page_cache = page_cache
+        self.explanation = ''
         
-        for m in dir(self):
-            if m.startswith('test'):
-                test = getattr(self, m)
-                result = {
-                    'name':namify(m),
-                    'score':test(url),
-                    'description':test.__doc__
-                }
-                self.results.append(result)
+        if self.TECHNOLOGY != '.NET' and self.page_cache[url].is_dot_net_webforms():
+            self.explanation = 'This site cannot be %s because it is built using .NET technology' % self.NAME
+            self.confidence = 0
+            
+        elif self.TECHNOLOGY != 'PHP' and self.page_cache[url].has_php_credits():
+            self.explanation = 'This site cannot be %s because it is built using PHP technology' % self.NAME
+            self.confidence = 0
         
-        self.confidence = self.get_confidence()
+        else:
+            for m in dir(self):
+                if m.startswith('test'):
+                    test = getattr(self, m)
+                    result = {
+                        'name':namify(m),
+                        'score':test(url),
+                        'description':test.__doc__
+                        }
+                    self.results.append(result)
+            
+            self.confidence = self.get_confidence()
+            if self.confidence > 75:
+                self.explanation = 'This site is probably running %s' % self.NAME
+            else:
+                self.explanation = 'This site is probably not running  %s' % self.NAME
+            
         
     def get_confidence(self):
         score = 0
@@ -163,8 +189,8 @@ class BaseSignature(object):
             if result['score'] == 1:
                 score += 1
             elif result['score'] == 100:
-                return 1
+                return 100
             elif result['score'] < 0:
                 return 0
                 
-        return score/len(self.results)
+        return (score/len(self.results)) * 100

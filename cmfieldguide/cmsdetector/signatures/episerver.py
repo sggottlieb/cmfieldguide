@@ -11,6 +11,7 @@ class Signature(BaseSignature):
     NAME = 'EPiServer'
     WEBSITE = 'http://episerver.com'
     KNOWN_POSITIVE = 'http://episerver.com'
+    TECHNOLOGY = '.NET'
 
     def test_has_episerver_login(self, url):
         """

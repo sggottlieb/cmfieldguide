@@ -12,19 +12,7 @@ class Signature(BaseSignature):
     NAME = 'WordPress'
     WEBSITE = 'http://wordpress.org'
     KNOWN_POSITIVE = 'http://wordpress.org'
-    
-    
-    def test_is_not_web_forms(self, url):
-        """
-        Wordpress is written in PHP.  It is highly unlikely that we would see any signs of
-        .NET webforms.
-        """
-        
-        if self.page_cache[url].is_dot_net_webforms():
-            return -1
-        else:
-            return 0
-        
+    TECHNOLOGY = 'PHP'
     
     def test_has_wp_login(self, url):
         """

@@ -5,20 +5,9 @@ class Signature(BaseSignature):
     NAME = 'eZ Publish'
     WEBSITE = 'http://ez.no'
     KNOWN_POSITIVE = 'http://ez.no/'
+    TECHNOLOGY = 'PHP'
     
     
-    def test_is_not_web_forms(self, url):
-        """
-        eZ Publish is written in PHP.  It is highly unlikely that we would see any signs of
-        .NET webforms.
-        """
-        
-        if self.page_cache[url].is_dot_net_webforms():
-            return -1
-        else:
-            return 0
-        
-
     def test_has_design_extension(self, url):
         """
         eZ Publish sites usually have their design in an extension

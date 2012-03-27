@@ -28,6 +28,7 @@
             <td>{{platform.confidence}}</td>
             <td>
                 <ul>
+                    <p>{{platform.explanation}}
                     {% for result in platform.results %}
                         <li>
                             <p>{{result.name}}: {{result.score}}</p>

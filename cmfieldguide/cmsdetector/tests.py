@@ -19,6 +19,10 @@ class TestPage(TestCase):
         stem = 'http://www.acme.com'
         self.assertEqual(get_url_stem(stem + '/foo/bar'), stem)
     
+    def test_php_credits(self):
+        self.assertTrue(Page('http://drupal.org').has_php_credits())
+        
+        self.assertFalse(Page('http://www.blendinteractive.com').has_php_credits())
         
     def test_url_exists(self):
         """
