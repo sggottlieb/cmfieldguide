@@ -193,7 +193,7 @@ class BaseSignature(object):
             self.explanation = 'This site cannot be %s because it is built using .NET technology' % self.NAME
             self.confidence = 0
             
-        elif self.TECHNOLOGY != 'PHP' and self.page_cache[url].has_php_credits():
+        elif self.TECHNOLOGY not in ('PHP','Baked') and self.page_cache[url].has_php_credits():
             self.explanation = 'This site cannot be %s because it is built using PHP technology' % self.NAME
             self.confidence = 0
         

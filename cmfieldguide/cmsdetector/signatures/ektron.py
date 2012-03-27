@@ -20,7 +20,7 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://www.ektron.com'
     TECHNOLOGY = '.NET'
 
-    def test_has_workarea(self, url):
+    def test_has_workarea_directory(self, url):
         """
         Ektron likes to store style sheets and javascripts in a rood directory called
         'Workarea'
