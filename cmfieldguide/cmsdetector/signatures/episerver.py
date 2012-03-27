@@ -27,8 +27,8 @@ class Signature(BaseSignature):
         The existence of this page yields a high confidence of EPiServer being used.
         """
         
-        if self.page_cache[get_url_stem(url) + '/util/login.aspx'].exists():
-            return 100
+        if self.page_cache[get_url_stem(url) + '/util/login.aspx'].contains_pattern('ctl00_FullRegion_LoginControl_UserName'):
+            return 1
         else:
             return 0
             
