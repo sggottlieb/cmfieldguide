@@ -1,4 +1,19 @@
 from __future__ import division
+
+"""
+This module contains base and helper functionality to make
+platform signatures easier to write.
+"""
+__author__ = "Seth Gottlieb and Deane Barker"
+__copyright__ = "CM Fieldguide"
+__credits__ = ["Seth Gottlieb", "Deane Barker"]
+__license__ = "GPL"
+__version__ = "0.1"
+__maintainer__ = "Seth Gottlieb"
+__email__ = "sgottlieb@alumni.duke.edu"
+__status__ = "Experimental"
+
+
 import urllib2
 import re
 
@@ -139,10 +154,25 @@ class Page(object):
         return credits_page.contains_pattern('PHP Credits') 
 
 class BaseSignature(object):
+    """
+    This is the base class from which all platform-specific signatures
+    should extend.  When extending BaseSignature, please override the NAME, 
+    WEBSITE, TECHNOLOGY, AND KNOWN_POSITIVE constants.
+    """
     
+    # Used to display the name of the platform this signature represents
     NAME = 'Base Signature Class.  OVERRIDE'
+    
+    # The website of the platform.  Often we assume that this website 
+    # is running the platform
     WEBSITE = 'http://www.acme.org OVERRIDE'
+    
+    # Set this to PHP, .NET, Java, Python, or Ruby
     TECHNOLOGY = 'unknown'
+    
+    # This is a site that you know is running the platform.
+    # Our unit tests check to make sure the signature returns
+    # a positive for this site.
     KNOWN_POSITIVE = 'http://www.acme.org OVERRIDE'
     
     def __init__(self, url, page_cache):

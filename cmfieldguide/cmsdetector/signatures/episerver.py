@@ -1,7 +1,14 @@
 """
-This signature tests for clues that a site is running on EPiServer
-
+This signature containts test to see if the site is running on EPiServer.
 """
+__author__ = "Deane Barker"
+__copyright__ = "CM Fieldguide"
+__credits__ = ["Deane Barker",]
+__license__ = "GPL"
+__version__ = "0.1"
+__maintainer__ = "Seth Gottlieb"
+__email__ = "deane@blendinteractive.com"
+__status__ = "Experimental"
 
 
 from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem

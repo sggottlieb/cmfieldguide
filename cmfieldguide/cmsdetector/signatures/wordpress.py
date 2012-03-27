@@ -1,7 +1,14 @@
 """
-This signature tests for clues that a site is running on WordPress
-
+This signature containts test to see if the site is running on Wordpress.
 """
+__author__ = "Seth Gottlieb"
+__copyright__ = "CM Fieldguide"
+__credits__ = ["Seth Gottlieb",]
+__license__ = "GPL"
+__version__ = "0.1"
+__maintainer__ = "Seth Gottlieb"
+__email__ = "sgottlieb@alumni.duke.edu"
+__status__ = "Experimental"
 
 
 from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem
@@ -20,7 +27,7 @@ class Signature(BaseSignature):
         """
         
         if self.page_cache[get_url_stem(url) + '/wp-login.php'].contains_pattern('loginform'):
-            return 100
+            return 1
         else:
             return 0
         
