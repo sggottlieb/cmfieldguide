@@ -94,12 +94,15 @@ class Page(object):
         else:
             return False  
     
-    def contains_pattern(self, pattern):
+    def contains_pattern(self, pattern, ignorecase=False):
         """
         Returns True if the given page contains a particular string.
         """
         result = False
-        rgx = re.compile(pattern)
+        if ignorecase:
+            rgx = re.compile(pattern, re.IGNORECASE)
+        else:
+            rgx = re.compile(pattern)
         
         if self.html and rgx.search(self.html):
                 result = True
