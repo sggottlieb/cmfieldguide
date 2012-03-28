@@ -154,7 +154,27 @@ class Page(object):
         ?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000
         """
         credits_page = Page(self.url + "?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000")
-        return credits_page.contains_pattern('PHP Credits') 
+        return credits_page.contains_pattern('PHP Credits')
+
+    def has_css_link(self, pattern, ignorecase = True):
+        """
+        Iterates all LINK tags and compares there HREF attribute
+        againsts a supplied pattern.
+        """
+        from BeautifulSoup import BeautifulSoup
+        soup = BeautifulSoup(self.html)
+
+        if ignorecase:
+            rgx = re.compile(pattern, re.IGNORECASE)
+        else:
+            rgx = re.compile(pattern)
+
+        result = False
+        for link in soup.findAll('link', {"rel": "stylesheet"}):
+            if link.has_key('href') and rgx.search(link['href']):
+                result = True
+
+        return result
 
 class BaseSignature(object):
     """
