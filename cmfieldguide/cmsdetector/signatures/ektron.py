@@ -22,11 +22,11 @@ class Signature(BaseSignature):
 
     def test_has_workarea_directory(self, url):
         """
-        Ektron likes to store style sheets and javascripts in a rood directory called
+        Ektron likes to store style sheets and javascripts in a root directory called
         'Workarea'
         """
         
-        if self.page_cache[url].contains_pattern('="/workarea', ignorecase=True):
+        if self.page_cache[url].has_css_link('/workarea'):
             return 1
         else:
             return 0
