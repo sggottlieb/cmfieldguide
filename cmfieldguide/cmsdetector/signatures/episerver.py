@@ -4,7 +4,7 @@ This signature containts test to see if the site is running on EPiServer.
 __author__ = "Deane Barker"
 __copyright__ = "CM Fieldguide"
 __credits__ = ["Deane Barker",]
-__license__ = "GPL"
+__license__ = "Unlicense"
 __version__ = "0.1"
 __maintainer__ = "Seth Gottlieb"
 __email__ = "deane@blendinteractive.com"

@@ -7,7 +7,7 @@ platform signatures easier to write.
 __author__ = "Seth Gottlieb and Deane Barker"
 __copyright__ = "CM Fieldguide"
 __credits__ = ["Seth Gottlieb", "Deane Barker"]
-__license__ = "GPL"
+__license__ = "Unlicense"
 __version__ = "0.1"
 __maintainer__ = "Seth Gottlieb"
 __email__ = "sgottlieb@alumni.duke.edu"
