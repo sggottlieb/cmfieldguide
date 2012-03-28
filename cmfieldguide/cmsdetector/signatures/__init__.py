@@ -62,6 +62,9 @@ class Page(object):
     """
     html = ''
     status_code = 0
+
+    # This is a backing property for the parsed_html property
+    _parsed_html = None
     
     
     def __init__(self, url):
@@ -159,10 +162,8 @@ class Page(object):
     def has_css_link(self, pattern, ignorecase = True):
         """
         Iterates all LINK tags and compares there HREF attribute
-        againsts a supplied pattern.
+        against a supplied pattern.
         """
-        from BeautifulSoup import BeautifulSoup
-        soup = BeautifulSoup(self.html)
 
         if ignorecase:
             rgx = re.compile(pattern, re.IGNORECASE)
@@ -170,11 +171,25 @@ class Page(object):
             rgx = re.compile(pattern)
 
         result = False
-        for link in soup.findAll('link', {"rel": "stylesheet"}):
+        for link in self.parsed_html.findAll('link', {"rel": "stylesheet"}):
             if link.has_key('href') and rgx.search(link['href']):
                 result = True
 
         return result
+
+    @property
+    def parsed_html(self):
+        """
+        Returns HTML parsed by Beautiful Soup.  Caches the parse for future requests.
+        """
+        if self._parsed_html:
+            return self._parsed_html
+
+        from BeautifulSoup import BeautifulSoup
+        self._parsed_html = BeautifulSoup(self.html)
+        return self._parsed_html
+
+
 
 class BaseSignature(object):
     """
