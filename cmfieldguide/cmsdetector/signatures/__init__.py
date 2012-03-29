@@ -159,23 +159,26 @@ class Page(object):
         credits_page = Page(self.url + "?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000")
         return credits_page.contains_pattern('PHP Credits')
 
-    def has_css_link(self, pattern, ignorecase = True):
+    def has_matching_tag(self, tag_name, attributes, ignorecase = True):
         """
-        Iterates all LINK tags and compares there HREF attribute
+        Iterates all specified tags and compares the specified attribute
         against a supplied pattern.
         """
 
-        if ignorecase:
-            rgx = re.compile(pattern, re.IGNORECASE)
-        else:
-            rgx = re.compile(pattern)
+        matching_tags = self.parsed_html.findAll(tag_name)
+        for matching_tag in matching_tags:
+            for attr_name in attributes:
+                attr_value = attributes[attr_name]
+                if ignorecase:
+                    rgx = re.compile(attr_value, re.IGNORECASE)
+                else:
+                    rgx = re.compile(attr_value)
 
-        result = False
-        for link in self.parsed_html.findAll('link', {"rel": "stylesheet"}):
-            if link.has_key('href') and rgx.search(link['href']):
-                result = True
+                if matching_tag.has_key(attr_name) and rgx.search(matching_tag[attr_name]):
+                    return True
 
-        return result
+        return False
+
 
     @property
     def parsed_html(self):
