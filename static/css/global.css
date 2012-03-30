@@ -1,1 +1,10 @@
-body {background-image:url('../img/b.png'); background-repeat:no-repeat; background-position:top;}
+body {background-image:url('../img/logo.png'); line-height: 18px; background-repeat:no-repeat; margin-top: 100px; font-family: georgia; color: rgb(80,80,80); }
+table { border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 5px 8px 5px; border-bottom: solid 1px #5A4C44; vertical-align: top; }
+input { padding: 3px; font-family: georgia; font-size: 23px;}
+#id_url { width: 400px; }
+#result { font-size: 26px; margin-bottom: 40px; }
+a { color: #5A4C44 }
+th { background-color: #D8CDBD }
+#sidebar { position: absolute; width: 200px; top: 200px;  font-size: 12px;}
+#main { position: absolute; left: 250px;  width: 900px; margin-bottom: 100px;}
