@@ -6,8 +6,14 @@
     <LINK REL=StyleSheet HREF="/static/css/global.css" TYPE="text/css">
 </head>
 <body>
-    {% block main %}
-    
-    {% endblock main%}
+    <div id="sidebar">
+        {% block sidebar %}
+        {% endblock sidebar %}
+    </div>
+
+    <div id="main">
+        {% block main %}
+        {% endblock main %}
+    </div>
 </body>
 </html>
