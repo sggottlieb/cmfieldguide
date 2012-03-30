@@ -1,10 +1,13 @@
 import engine
 from django.shortcuts import render_to_response
+from django.conf import settings
 from django.template import RequestContext
 from forms import SiteForm
 
-def index(request):
 
+
+def index(request):
+    
     url = ''
     platforms = []
     if 'url' in request.GET:
@@ -17,6 +20,7 @@ def index(request):
     
     return render_to_response('index.html', 
         {'form':form,
-         'platforms':platforms
+         'platforms':platforms,
+         'media_root': settings.STATIC_ROOT
         },
         context_instance=RequestContext(request))
