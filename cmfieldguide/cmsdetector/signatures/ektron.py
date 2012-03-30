@@ -25,7 +25,7 @@ class Signature(BaseSignature):
         Ektron likes to store style sheets and javascripts in a root directory called
         'Workarea'
         """
-        if self.page_cache[url].has_matching_tag( 'link', { 'rel': 'stylesheet', 'link': '/workarea' } ):
+        if self.page_cache[url].has_matching_tag( 'link', { 'rel': 'stylesheet', 'href': 'Workarea' } ):
             return 1
         else:
             return 0

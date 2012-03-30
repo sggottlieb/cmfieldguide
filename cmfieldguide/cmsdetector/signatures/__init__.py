@@ -164,19 +164,37 @@ class Page(object):
         Iterates all specified tags and compares the specified attribute
         against a supplied pattern.
         """
-
+        
         matching_tags = self.parsed_html.findAll(tag_name)
         for matching_tag in matching_tags:
-            for attr_name in attributes:
+            # Optimistically assuming a match
+            tag_match = True
+            
+            for attr_name in attributes.keys():
                 attr_value = attributes[attr_name]
-                if ignorecase:
-                    rgx = re.compile(attr_value, re.IGNORECASE)
+                
+                if matching_tag.has_key(attr_name):
+                    # has the attribute
+                    
+                    if ignorecase:
+                        rgx = re.compile(attr_value, re.IGNORECASE)
+                    else:
+                        rgx = re.compile(attr_value)
+                    
+                    if not rgx.search(matching_tag[attr_name]):
+                        #value does not match
+                        tag_match = False
+                        break
                 else:
-                    rgx = re.compile(attr_value)
-
-                if matching_tag.has_key(attr_name) and rgx.search(matching_tag[attr_name]):
-                    return True
-
+                    #does't have the attribute
+                    tag_match = False
+                    break
+            
+            #iterated through the filters.
+            if tag_match == True:
+                return True
+                            
+        #got through all of the tags with no matches
         return False
 
 
