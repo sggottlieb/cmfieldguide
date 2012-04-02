@@ -107,7 +107,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'cmsdetector.urls'
+ROOT_URLCONF = 'cmfieldguide.cmsdetector.urls'
 
 TEMPLATE_DIRS = (
     'D:/Code/Django/cmsid'
