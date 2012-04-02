@@ -27,7 +27,7 @@ class Signature(BaseSignature):
 
         """
         
-        if self.page_cache[get_url_stem(url) + '/umbraco/login.aspx'].contains_pattern('Umbraco'):
+        if self.page_cache[get_url_stem(url) + '/umbraco/login.aspx'].contains_pattern('<input name="lname"'):
             return 1
         else:
             return 0
