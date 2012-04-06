@@ -6,7 +6,7 @@ from views import home
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^detect', include('cmsdetector.urls')),
+    url(r'^detect', include('cmfieldguide.cmsdetector.urls')),
     url(r'^$', home, name='home'),
     # url(r'^cmsid/', include('cmsid.foo.urls')),
 
