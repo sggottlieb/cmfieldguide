@@ -163,40 +163,73 @@ class Page(object):
         """
         Iterates all specified tags and compares the specified attribute
         against a supplied pattern.
+        
+        Usage:
+        
+        To look for a tag like:
+        <meta name="generator" content="Joomla">
+        
+        do:
+        
+        page.has_matching_tag('meta' {'name':'generator'; 'content':'joomla'})
+        
+        Note, the default search is case insensitive.
+        
         """
         
-        matching_tags = self.parsed_html.findAll(tag_name)
-        for matching_tag in matching_tags:
-            # Optimistically assuming a match
-            tag_match = True
-            
-            for attr_name in attributes.keys():
-                attr_value = attributes[attr_name]
-                
-                if matching_tag.has_key(attr_name):
-                    # has the attribute
-                    
-                    if ignorecase:
-                        rgx = re.compile(attr_value, re.IGNORECASE)
-                    else:
-                        rgx = re.compile(attr_value)
-                    
-                    if not rgx.search(matching_tag[attr_name]):
-                        #value does not match
-                        tag_match = False
-                        break
-                else:
-                    #does't have the attribute
-                    tag_match = False
-                    break
-            
-            #iterated through the filters.
-            if tag_match == True:
-                return True
-                            
-        #got through all of the tags with no matches
-        return False
+        # I feel like I can really boil this down by doing something like
+        
+        for k in attributes.keys():
+            if ignorecase:
+                attributes[k] = re.compile(attributes[k], re.IGNORECASE)
+            else:
+                attributes[k] = re.compile(attributes[k])
+                        
+        if self.parsed_html.findAll(tag_name, **attributes):
+            return True
+        else:
+            return False
+        
+    
+    
+    def has_tag_containing_pattern(self, tag_name, pattern, ignorecase=True):
+        """
+        Looks for a regex expression within a given tag.
+        
+        Usage:
+        
+        To look for a tag like:
+        <script type="text/javascript">
 
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-28302554-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+        
+        you might do something like:
+        
+        page.has_tag_containing_pattern('script', '\.google-analytics.com/ga\.js')
+        
+        Note, the default search is case insensitive.
+        """
+        
+        if ignorecase:
+            rgx = re.compile(pattern, re.IGNORECASE)
+        else:
+            rgx = re.compile(pattern)
+        
+        if self.parsed_html.findAll(tag_name, text=rgx):
+            return True
+        else:
+            return False
+            
 
     @property
     def parsed_html(self):

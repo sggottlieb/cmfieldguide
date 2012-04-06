@@ -6,10 +6,12 @@ from cmfieldguide.cmsdetector.engine import get_platform_names
 class TestPage(TestCase):
     
     def test_page_contains_pattern(self):
-        url = "http://www.contenthere.net"
-        pattern = "wp-content/themes/"
-        page = Page(url)
-        self.assertTrue(page.contains_pattern(pattern))
+        """
+        Testing the contains_pattern method
+        """
+        page = Page("http://www.contenthere.net")
+        self.assertTrue(page.contains_pattern("wp-content/themes/"))
+        self.assertFalse(page.contains_pattern("wp content/themes/"))
         
     def test_get_url_stem(self):
         """
@@ -29,12 +31,27 @@ class TestPage(TestCase):
         Tests that the exists function is working.
         """
         
-        good_page = Page('http://www.google.com')
-        bad_page = Page('http://www.contenthere.net/yomama')
+        self.assertTrue(Page('http://www.google.com').exists())
+        self.assertFalse(Page('http://www.contenthere.net/yomama').exists())
+    
+    def test_has_matching_tag(self):
+        """
+        Test our Beautiful Soup tag attribute method
+        """
         
-        self.assertTrue(good_page.exists())
-        self.assertFalse(bad_page.exists())
-
+        page = Page('http://www.contenthere.net')
+        self.assertTrue(page.has_matching_tag('div', {'id':'post', 'class':'post'}))
+        self.assertFalse(page.has_matching_tag('div', {'id':'content', 'class':'foo'}))
+        
+        
+    def test_has_tag_containing(self):
+        """
+        Tests our Beautiful Soup tag containing method
+        """
+        page = Page('http://www.contenthere.net')
+        self.assertTrue(page.has_tag_containing_pattern('script','google-analytics'))
+        self.assertFalse(page.has_tag_containing_pattern('script','gargle-analytics'))
+        
 
 class TestSignaturePositives(TestCase):
     
