@@ -28,7 +28,7 @@ class Signature(BaseSignature):
         If you go to this URL, you should see a login page.
         """
         
-        if self.page_cache[get_url_stem(url) + '/administrator'].contains_pattern('Joomla'):
+        if self.page_cache[get_url_stem(url) + '/administrator'].contains_pattern('login'):
             return 1
         else:
             return 0
