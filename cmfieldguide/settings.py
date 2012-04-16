@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'south',
 #    'django.contrib.staticfiles',
     'cmfieldguide.cmsdetector',
     'cmfieldguide.cmfg_skin',
