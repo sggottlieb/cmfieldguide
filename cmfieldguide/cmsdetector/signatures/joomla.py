@@ -27,8 +27,9 @@ class Signature(BaseSignature):
         
         If you go to this URL, you should see a login page.
         """
+        login_page = site.page_cache[site.url_stem + '/administrator']
         
-        if site.page_cache[site.url_stem + '/administrator'].contains_pattern('login'):
+        if login_page.status_code != 404 and login_page.contains_pattern('login'):
             return 1
         else:
             return 0
