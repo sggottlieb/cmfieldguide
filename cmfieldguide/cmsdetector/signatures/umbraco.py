@@ -11,7 +11,7 @@ __email__ = "sgottlieb@alumni.duke.edu"
 __status__ = "Experimental"
 
 
-from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem
+from cmfieldguide.cmsdetector.signatures import BaseSignature
 
 
 class Signature(BaseSignature):
@@ -21,13 +21,13 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://umbraco.com/'
     TECHNOLOGY = '.NET'
 
-    def test_has_umbraco_login(self, url):
+    def test_has_umbraco_login(self, site):
         """
         Umbraco sites have a login page under the URL '/umbraco/login.aspx'.
 
         """
         
-        if self.page_cache[get_url_stem(url) + '/umbraco/login.aspx'].contains_pattern('<input name="lname"'):
+        if site.page_cache[site.url_stem + '/umbraco/login.aspx'].contains_pattern('<input name="lname"'):
             return 1
         else:
             return 0

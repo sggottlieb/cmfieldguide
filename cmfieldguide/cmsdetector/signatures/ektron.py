@@ -11,7 +11,7 @@ __email__ = "sgottlieb@alumni.duke.edu"
 __status__ = "Experimental"
 
 
-from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem
+from cmfieldguide.cmsdetector.signatures import BaseSignature
 
 class Signature(BaseSignature):
 
@@ -20,12 +20,12 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://www.ektron.com'
     TECHNOLOGY = '.NET'
 
-    def test_has_workarea_directory(self, url):
+    def test_has_workarea_directory(self, site):
         """
         Ektron likes to store style sheets and javascripts in a root directory called
         'Workarea'
         """
-        if self.page_cache[url].has_matching_tag( 'link', { 'rel': 'stylesheet', 'href': 'Workarea' } ):
+        if site.home_page.has_matching_tag( 'link', { 'rel': 'stylesheet', 'href': 'Workarea' } ):
             return 1
         else:
             return 0

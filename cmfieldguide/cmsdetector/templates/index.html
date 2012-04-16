@@ -16,13 +16,13 @@
         {{form.url}}
         <input id="test-url" type="submit" value="  Test  ">
     </form>
-    {% if platforms %}
+    {% if site %}
         <div id="result">
             {% ifequal platforms.0.confidence 0%}
             <p><b>Sorry</b>, but this site does not match any of our signatures.</p>
 
             {% else %}
-            <p>Our Best Guess: <b>{{platforms.0.NAME}}</b></p>
+            <p>Our Best Guess: <b>{{site.platforms.0.platform_name}}</b></p>
             {% endifequal %}
         </div>
 
@@ -33,10 +33,10 @@
                 <th>Confidence</th>
                 <th>Tests</th>
             </tr>
-        {% for platform in platforms %}
+        {% for platform in site.platforms %}
             <tr>
-                <td>{{platform.NAME}}</td>
-                <td><a href=="{{platform.WEBSITE}}">{{platform.WEBSITE}}</a></td>
+                <td>{{platform.platform_name}}</td>
+                <td><a href=="{{platform.platform_website}}">{{platform.platform_website}}</a></td>
                 <td>{{platform.confidence}}</td>
                 <td>
                     {{platform.explanation}}
@@ -44,7 +44,7 @@
                         <ul>
                             {% for result in platform.results %}
                             <li>
-                                {{result.description}} <i><small>({{result.name}}: {{result.score}})</small></i>
+                                {{result.description}} <i><small>({{result.name}}: {{result.result}})</small></i>
                             </li>
                             {% endfor %}
                         </ul>

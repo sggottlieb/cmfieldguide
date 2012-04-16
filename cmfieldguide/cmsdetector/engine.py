@@ -1,20 +1,32 @@
 import signatures
 import pkgutil
+import datetime
 from operator import itemgetter, attrgetter
 
-from cmfieldguide.cmsdetector.signatures import PageCache
+from cmfieldguide.cmsdetector.models import Site, Page, save_as_site_object
 
-def test(url):
+
+def test(url, force_new=False):
     
-    page_cache = PageCache()
+    #Looking for the site in the database
+    site_cache = Site.objects.filter(url=url)
+    site_cache = site_cache.filter(date_time__gt=datetime.datetime.now()-datetime.timedelta(days=1))
     
-    platforms = []
-    for platform_name in get_platform_names():
-        platforms.append(__import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
-            fromlist='Signature').Signature(url, page_cache))
+    #if force_new:
+    if force_new:
+     site_cache = site_cache.delete()
     
+    #If we found it, use it.
+    if site_cache:
+        site = site_cache[0]
+    else:
+        site = save_as_site_object(Page(url))
     
-    return sorted(platforms, key=attrgetter('confidence'), reverse=True)
+        for platform_name in get_platform_names():
+            signature = __import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
+                fromlist='Signature').Signature(site)
+    
+    return site
 
 
 def get_platform_names():

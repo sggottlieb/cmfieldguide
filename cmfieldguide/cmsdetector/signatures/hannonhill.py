@@ -21,7 +21,7 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://www.hannonhill.com/'
     TECHNOLOGY = 'Baked'
 
-    def test_has_underscore_files_directory(self, url):
+    def test_has_underscore_files_directory(self, site):
         """
         Hannon Hill sites tend to template resources such as CSS and images 
         stored in a _files directory.
@@ -30,7 +30,7 @@ class Signature(BaseSignature):
         
         """
         
-        if self.page_cache[url].contains_pattern('_files'):
+        if site.home_page.contains_pattern('_files'):
             return 1
         else:
             return 0

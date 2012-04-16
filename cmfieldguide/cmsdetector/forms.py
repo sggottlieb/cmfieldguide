@@ -1,5 +1,6 @@
 import urllib2
 from django.forms import Form, URLField, ValidationError
+from models import Site
 
 class SiteForm(Form):
     url = URLField()

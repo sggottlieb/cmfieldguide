@@ -21,13 +21,13 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://drupal.org/'
     TECHNOLOGY = 'PHP'
 
-    def test_has_sites_path(self, url):
+    def test_has_sites_path(self, site):
         """
         Drupal sites manage themes under a path that 
         starts with /sites/all or sites/default.
         """
         
-        if self.page_cache[url].contains_any_pattern(("/sites/all", "/sites/default")):
+        if site.home_page.contains_any_pattern(("/sites/all", "/sites/default")):
             return 1
         else:
             return 0

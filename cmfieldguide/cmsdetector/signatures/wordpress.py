@@ -11,7 +11,7 @@ __email__ = "sgottlieb@alumni.duke.edu"
 __status__ = "Experimental"
 
 
-from cmfieldguide.cmsdetector.signatures import BaseSignature, get_url_stem
+from cmfieldguide.cmsdetector.signatures import BaseSignature
 
 
 class Signature(BaseSignature):
@@ -21,24 +21,24 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://wordpress.org'
     TECHNOLOGY = 'PHP'
     
-    def test_has_wp_login(self, url):
+    def test_has_wp_login(self, site):
         """
         By default, Wordpress ships with a login page at /wp-login.php
         """
         
-        if self.page_cache[get_url_stem(url) + '/wp-login.php'].contains_pattern('loginform'):
+        if site.page_cache[site.url_stem + '/wp-login.php'].contains_pattern('loginform'):
             return 1
         else:
             return 0
         
         
-    def test_has_wp_theme(self, url):
+    def test_has_wp_theme(self, site):
         """
         Wordpress sites manage layouts and other formatting using style sheets in
         themes directory.
         """
         
-        if self.page_cache[url].contains_pattern("wp-content/themes/"):
+        if site.home_page.contains_pattern("wp-content/themes/"):
             return 1
         else:
             return 0
