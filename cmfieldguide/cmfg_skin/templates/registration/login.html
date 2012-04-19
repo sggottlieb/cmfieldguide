@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main %}
+<form id="cp" action="/accounts/login/" method="post">
+    <h1>Sign In</h1>
+    <fieldset>
+      <div>
+      {% if form.non_field_errors %}
+        <span class="logerror large">{{ form.non_field_errors }}</span>
+      {% endif %}
+      {% for error in form.username.errors %}
+        <span class="logerror small"><strong>{{error}}</strong></span>
+      {% endfor %}
+        <label>Username</label><input type="text" name="username" value="" class="fld">
+      </div>
+      <div>
+      {% for error in form.password.errors %}
+        <span class="logerror small"><strong>{{error}}</strong></span>
+      {% endfor %}
+        <label>Password</label><input type="password" name="password" autocomplete="off" value="" class="fld">
+      </div>
+      <input class="logbtn" type="submit" value="submit" />
+      <input type="hidden" name="next" value="{{ next }}" />
+      {% csrf_token %}
+    </fieldset>
+</form>
+{% endblock main %}
