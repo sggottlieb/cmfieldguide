@@ -22,7 +22,11 @@
             <p><b>Sorry</b>, but this site does not match any of our signatures.</p>
 
             {% else %}
-            <p>Our Best Guess: <b>{{site.platforms.0.platform_name}}</b></p>
+            <p>Our Best Guess: <b>{{site.platforms.0.platform_name}}</b>
+                {% if site.platforms.0.visitor_rejects%}
+                has been rejected
+                {% endif %}
+            </p>
             {% endifequal %}
         </div>
 
@@ -32,12 +36,26 @@
                 <th>Website</th>
                 <th>Confidence</th>
                 <th>Tests</th>
+                
             </tr>
         {% for platform in site.platforms %}
             <tr>
                 <td>{{platform.platform_name}}</td>
                 <td><a href="{{platform.platform_website}}">{{platform.platform_website}}</a></td>
-                <td>{{platform.confidence}}</td>
+                <td>
+                    {{platform.confidence}}
+                    <form action="{% url platform_reject id=platform.id %}" method="POST">{% csrf_token %}
+                    
+                    
+                        <input type="hidden" name="next" value="{{next}}"/>
+                        {% if platform.visitor_rejects %}
+                        <input type="submit" value="undo reject"/>
+                        {% else %}
+                        <input type="submit" value="reject"/>
+                        {% endif %}
+                        
+                    </form>
+                </td>
                 <td>
                     {{platform.explanation}}
                     {% if platform.results %}
@@ -50,6 +68,7 @@
                         </ul>
                     {% endif %}
                 </td>
+              
 
             </tr>
         {% endfor %}

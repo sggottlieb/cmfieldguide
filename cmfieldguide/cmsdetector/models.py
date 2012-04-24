@@ -25,6 +25,9 @@ class PlatformSiteTest(models.Model):
     explanation = models.TextField(blank=True, null=True)
     visitor_rejects = models.BooleanField(default=False)
     
+    class Meta:
+        ordering = ["-site__date_time", "platform_name"]
+    
     def __unicode__(self):
         return u"%s test for %s on %d/%d/%d" % (
             self.platform_name,
