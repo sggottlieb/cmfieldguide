@@ -3,7 +3,7 @@ import os
 import django
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -17,7 +17,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'CMFG_DBNAME' in os.environ and os.environ['CMFG_DBNAME'] or 'cmfg',
         'USER': 'CMFG_DBUSER' in os.environ and os.environ['CMFG_DBUSER'] or 'cmfg',
-        'PASSWORD': 'CMFG_DBPASS' in os.environ and os.environ['CMFG_DBPASS'] or 'nopass',
+        'PASSWORD': 'CMFG_DBPASS' in os.environ and os.environ['CMFG_DBPASS'] or 'badpass',
         'HOST': 'CMFG_DBHOST' in os.environ and os.environ['CMFG_DBHOST'] or 'localhost'
     }
 }
@@ -71,7 +71,7 @@ MEDIA_ROOT = os.path.join(BUILD_ROOT, 'static')
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
