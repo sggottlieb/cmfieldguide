@@ -3,7 +3,7 @@ import os
 import django
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -17,7 +17,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'CMFG_DBNAME' in os.environ and os.environ['CMFG_DBNAME'] or 'cmfg',
         'USER': 'CMFG_DBUSER' in os.environ and os.environ['CMFG_DBUSER'] or 'cmfg',
-        'PASSWORD': 'CMFG_DBPASS' in os.environ and os.environ['CMFG_DBPASS'] or 'badpass',
+        'PASSWORD': 'CMFG_DBPASS' in os.environ and os.environ['CMFG_DBPASS'] or 'nopass',
         'HOST': 'CMFG_DBHOST' in os.environ and os.environ['CMFG_DBHOST'] or 'localhost'
     }
 }
@@ -51,7 +51,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(BUILD_ROOT, 'static')
+MEDIA_ROOT = os.path.join(BUILD_ROOT, 'static') 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
