@@ -13,12 +13,13 @@
         
 {% block main %}
     <form method="GET" action=".">
+        {{form.url.errors}}
         {{form.url}}
         <input id="test-url" type="submit" value="  Test  ">
     </form>
     {% if site %}
         <div id="result">
-            {% ifequal platforms.0.confidence 0%}
+            {% if site.platforms.0.confidence < 10%}
             <p><b>Sorry</b>, but this site does not match any of our signatures.</p>
 
             {% else %}
@@ -27,7 +28,7 @@
                 has been rejected
                 {% endif %}
             </p>
-            {% endifequal %}
+            {% endif %}
         </div>
 
         <table>

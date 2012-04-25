@@ -42,7 +42,6 @@ class PlatformSiteTest(models.Model):
     def results(self):
         return TestResult.objects.filter(test_run=self)
 
-
 class TestResult(models.Model):
     test_run = models.ForeignKey('PlatformSiteTest')
     name = models.CharField(max_length=100)
