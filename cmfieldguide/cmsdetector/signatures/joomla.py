@@ -29,7 +29,7 @@ class Signature(BaseSignature):
         """
         login_page = site.page_cache[site.url_stem + '/administrator']
         
-        if login_page.status_code != 404 and login_page.contains_pattern('login'):
+        if login_page.status_code != 404 and login_page.has_matching_tag( 'input', { 'name': 'username'} ):
             return 1
         else:
             return 0
