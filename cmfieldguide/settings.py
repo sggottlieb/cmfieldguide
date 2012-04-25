@@ -3,7 +3,7 @@ import os
 import django
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -153,3 +153,8 @@ LOGGING = {
         },
     }
 }
+
+try:
+    from settings_dev import *
+except ImportError, exp:
+    pass
