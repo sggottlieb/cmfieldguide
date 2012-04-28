@@ -1,6 +1,8 @@
 from django.test import TestCase
-from cmfieldguide.cmsdetector.signatures import BaseSignature, Page, get_url_stem, PageCache
+from cmfieldguide.cmsdetector.signatures import BaseSignature
+from cmfieldguide.cmsdetector.page_tools import Page
 from cmfieldguide.cmsdetector.engine import get_platform_names
+from cmfieldguide.cmsdetector.models import save_as_site_object
 
 
 class TestPage(TestCase):
@@ -13,14 +15,7 @@ class TestPage(TestCase):
         self.assertTrue(page.contains_pattern("wp-content/themes/"))
         self.assertFalse(page.contains_pattern("wp content/themes/"))
         
-    def test_get_url_stem(self):
-        """
-        Tests that the URL stem method works
-        """
-        
-        stem = 'http://www.acme.com'
-        self.assertEqual(get_url_stem(stem + '/foo/bar'), stem)
-    
+
     def test_php_credits(self):
         self.assertTrue(Page('http://drupal.org').has_php_credits())
         
@@ -58,11 +53,11 @@ class TestSignaturePositives(TestCase):
     
     def setUp(self):
         self.sig_list = []
-        page_cache = PageCache()
         for platform_name in get_platform_names():
             sig = __import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
                 fromlist='Signature')
-            self.sig_list.append(sig.Signature(sig.Signature.KNOWN_POSITIVE, page_cache))
+            site = save_as_site_object(Page(sig.Signature.KNOWN_POSITIVE))
+            self.sig_list.append(sig.Signature(site))
     
             
     def test_known_positives(self):
@@ -79,14 +74,12 @@ class TestSignatureNegatives(TestCase):
 
     def setUp(self):
         self.sig_list = []
-        page_cache = PageCache()
-        
-        self.known_negative = 'http://www.google.com'
+        site = save_as_site_object(Page('http://www.google.com'))
         
         for platform_name in get_platform_names():
             sig = __import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
                 fromlist='Signature')
-            self.sig_list.append(sig.Signature(self.known_negative, page_cache))
+            self.sig_list.append(sig.Signature(site))
 
             
             

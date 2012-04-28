@@ -18,7 +18,7 @@ class Signature(BaseSignature):
     
     NAME = 'Joomla'
     WEBSITE = 'http://joomla.org'
-    KNOWN_POSITIVE = 'http://joomla.org/'
+    KNOWN_POSITIVE = 'http://www.cmsexpo.net'
     TECHNOLOGY = 'PHP'
 
     def test_has_administrator_login(self, site):
@@ -29,7 +29,7 @@ class Signature(BaseSignature):
         """
         login_page = site.page_cache[site.url_stem + '/administrator']
         
-        if login_page.status_code != 404 and login_page.has_matching_tag( 'input', { 'name': 'username'} ):
+        if login_page.status_code != 404 and login_page.has_matching_tag('input', { 'id': 'modlgn_username'} ):
             return 1
         else:
             return 0

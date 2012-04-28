@@ -89,6 +89,7 @@ class BaseSignature(object):
             else:
                 pt.explanation = 'This site is probably not running  %s' % self.NAME
         
+        self.confidence = pt.confidence
         pt.save()    
         
     
