@@ -7,24 +7,38 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Seth Gottlieb', 'sgottlieb@alumni.duke.edu'),
+     ('Deane Barker', 'deane@blendinteractive.com')
 )
+
+def get_env_setting(setting, default):
+    return setting in os.environ and os.environ[setting] or default
+
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'CMFG_DBNAME' in os.environ and os.environ['CMFG_DBNAME'] or 'cmfg',
-        'USER': 'CMFG_DBUSER' in os.environ and os.environ['CMFG_DBUSER'] or 'cmfg',
-        'PASSWORD': 'CMFG_DBPASS' in os.environ and os.environ['CMFG_DBPASS'] or 'nopass',
-        'HOST': 'CMFG_DBHOST' in os.environ and os.environ['CMFG_DBHOST'] or 'localhost'
+        'NAME': get_env_setting('CMFG_DBNAME', 'cmfg'),
+        'USER': get_env_setting('CMFG_DBUSER', 'cmfg'),
+        'PASSWORD': get_env_setting('CMFG_DBPASS', 'nopass'),
+        'HOST': get_env_setting('CMFG_DBHOST','localhost')
     }
 }
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 BUILD_ROOT = os.path.dirname(SITE_ROOT)
+
+
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = get_env_setting('CMFG_EMAIL_HOST','smtp.gmail.com')
+EMAIL_HOST_USER = get_env_setting('CMFG_EMAIL_USER','seth@contenthere.net')
+EMAIL_HOST_PASSWORD = get_env_setting('CMFG_EMAIL_PASSWORD', 'nopass')
+EMAIL_PORT = get_env_setting('CMFG_EMAIL_PORT',587)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
