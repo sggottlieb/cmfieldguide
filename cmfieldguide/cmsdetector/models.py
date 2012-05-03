@@ -9,7 +9,7 @@ def save_as_site_object(page):
             title = page.get_title(),
             status_code = page.status_code,
             headers = pickle.dumps(page.headers),
-            geturl = page.geturl,
+            geturl = page.get_url,
         )
         site.page_cache[page.url] = page
         return site
