@@ -1,5 +1,5 @@
 """
-This signature containts test to see if the site is running on Drupal.
+This signature containts test to see if the site is running on Concrete5.
 """
 __author__ = "Seth Gottlieb"
 __copyright__ = "CM Fieldguide"
