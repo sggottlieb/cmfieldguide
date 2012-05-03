@@ -52,7 +52,7 @@ class Page(object):
             if page:
                 self.status_code = page.getcode()
                 self.headers = page.headers
-                self.geturl = page.geturl()
+                self.get_url = page.geturl()
 
                 for line in page.readlines():
                     self.html += line    
