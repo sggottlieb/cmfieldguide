@@ -16,7 +16,7 @@ from cmfieldguide.cmsdetector.signatures import BaseSignature
 
 class Signature(BaseSignature):
     
-    NAME = 'Ingeniux'
+    NAME = 'Modx'
     WEBSITE = 'http://modx.com/'
     KNOWN_POSITIVE = 'http://modx.com/'
     TECHNOLOGY = 'PHP'
