@@ -1,5 +1,5 @@
 """
-This signature containts test to see if the site is running on EPiServer.
+This signature containts test to see if the site is running on Ektron.
 """
 __author__ = "Seth Gottlieb"
 __copyright__ = "CM Fieldguide"
