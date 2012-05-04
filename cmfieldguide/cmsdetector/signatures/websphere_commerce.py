@@ -26,7 +26,7 @@ class Signature(BaseSignature):
         
         """
         
-        import pdb; pdb.set_trace()
+        
         pattern = 'wcs/stores/servlet'
         if pattern in site.home_page.url:
             return 1
