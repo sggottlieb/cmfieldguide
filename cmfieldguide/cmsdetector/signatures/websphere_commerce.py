@@ -25,10 +25,12 @@ class Signature(BaseSignature):
         All the pages of a Webshpere Commerce website have a URL that contains "wcs/stores/servlet"
         
         """
+        
+        import pdb; pdb.set_trace()
         pattern = 'wcs/stores/servlet'
         if pattern in site.home_page.url:
             return 1
-        elif site.home_page.has_matching_tag('meta', {'HTTP-EQUIV':'Refresh','CONTENT':pattern}):
+        elif site.home_page.has_matching_tag('meta', {'http-equiv':'Refresh','content':pattern}):
             return 1
         elif pattern in site.home_page.get_url:
             return 1
