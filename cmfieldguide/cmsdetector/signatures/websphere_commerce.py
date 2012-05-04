@@ -23,9 +23,12 @@ class Signature(BaseSignature):
     def test_has_wcs_url(self, site):
         """
         All the pages of a Webshpere Commerce website have a URL that contains "wcs/stores/servlet"
+        
         """
         pattern = 'wcs/stores/servlet'
         if pattern in site.home_page.url:
+            return 1
+        elif site.home_page.has_matching_tag('meta', {'HTTP-EQUIV':'Refresh','CONTENT':pattern}):
             return 1
         elif pattern in site.home_page.get_url:
             return 1
