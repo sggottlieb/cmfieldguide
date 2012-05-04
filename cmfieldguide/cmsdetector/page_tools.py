@@ -161,7 +161,7 @@ class Page(object):
             else:
                 attributes[k] = re.compile(attributes[k])
 
-        if self.parsed_html.findAll(tag_name, **attributes):
+        if self.parsed_html.findAll(name=tag_name, attrs=attributes):
             return True
         else:
             return False
