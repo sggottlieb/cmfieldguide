@@ -29,9 +29,9 @@ class Page(object):
     """
     html = ''
     status_code = 0
-    headers = None
-    get_url = None
-    url = None
+    headers = {}
+    get_url = ''
+    url = ''
 
     # This is a backing property for the parsed_html property
     _parsed_html = None
