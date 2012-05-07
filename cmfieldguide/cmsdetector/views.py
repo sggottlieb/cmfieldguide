@@ -1,4 +1,3 @@
-import engine
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
@@ -21,7 +20,7 @@ def index(request):
     if 'url' in request.GET:
         form = SiteForm(data=request.GET)
         if form.is_valid():
-            site = engine.test(form.cleaned_data['url'], 'force' in request.GET)
+            site = form.site
     else:
         form = SiteForm()
     

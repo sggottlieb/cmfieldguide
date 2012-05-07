@@ -46,9 +46,7 @@ class Page(object):
                 page = urllib2.urlopen(url, timeout=2)
             except urllib2.HTTPError, error:
                 page = error
-            except IOError:
-                page = None
-
+            
             if page:
                 self.status_code = page.getcode()
                 self.headers = page.headers
