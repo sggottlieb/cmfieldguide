@@ -21,16 +21,15 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://www.hannonhill.com/'
     TECHNOLOGY = 'Baked'
 
-    def test_has_underscore_files_directory(self, site):
+    def test_has_analytics_marketing_code(self, site):
         """
-        Hannon Hill sites tend to template resources such as CSS and images 
-        stored in a _files directory.
-        
-        
-        
+        Newer implementations of Hannon Hill typically ship 
+        with an 'Analytics and Inbound Marketing' service that
+        requires some Javascript variables in the page.
         """
         
-        if site.home_page.contains_pattern('_files'):
+        if site.home_page.has_tag_containing_pattern('script','sAId') and \
+            site.home_page.has_tag_containing_pattern('script','sCId'):
             return 1
         else:
             return 0
