@@ -35,6 +35,7 @@ class Page(object):
 
     # This is a backing property for the parsed_html property
     _parsed_html = None
+    _title = ''
 
 
     def __init__(self, url=None):
@@ -43,7 +44,7 @@ class Page(object):
             self.url = url
 
             try:
-                page = urllib2.urlopen(url, timeout=2)
+                page = urllib2.urlopen(url, timeout=3)
             except urllib2.HTTPError, error:
                 page = error
             
@@ -56,9 +57,12 @@ class Page(object):
                     self.html += line    
                 page.close()
 
-
-    def get_title(self):
-        return "some title"
+    @property
+    def title(self):
+        if not self._title:
+            self._title = self.parsed_html.title.string
+        
+        return self._title
 
     def exists(self):
         """

@@ -1,8 +1,9 @@
 from django.test import TestCase
 from cmfieldguide.cmsdetector.signatures import BaseSignature
 from cmfieldguide.cmsdetector.page_tools import Page
-from cmfieldguide.cmsdetector.engine import get_platform_names
+from cmfieldguide.cmsdetector.forms import SiteForm
 from cmfieldguide.cmsdetector.models import save_as_site_object
+from cmfieldguide.cmsdetector.signatures import get_platform_names
 
 
 class TestPage(TestCase):
@@ -47,7 +48,10 @@ class TestPage(TestCase):
         self.assertTrue(page.has_tag_containing_pattern('script','google-analytics'))
         self.assertFalse(page.has_tag_containing_pattern('script','gargle-analytics'))
         
-
+    def test_get_title(self):
+        page = Page('http://www.sethgottlieb.com')
+        self.assertEquals(page.title, 'Seth Gottlieb : Seth Gottlieb : Home')
+        
 class TestSignaturePositives(TestCase):
     
     

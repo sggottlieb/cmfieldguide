@@ -14,13 +14,24 @@ __status__ = "Experimental"
 
 import urllib2
 import re
+import pkgutil
 
 from cmfieldguide.cmsdetector.models import PlatformSiteTest, TestResult
+
 
 def namify(m):
     """Turns a test name into a name"""
     
     return ' '.join(m.split('_')[1:]).title()
+
+def get_platform_names():
+    names = []
+
+    
+    for importer, modname, ispkg in pkgutil.iter_modules(__path__):
+        names.append(modname)
+
+    return names
 
 
 class BaseSignature(object):
@@ -61,7 +72,7 @@ class BaseSignature(object):
             
         )
         
-        if self.TECHNOLOGY != '.NET' and site.page_cache[site.url].is_dot_net_webforms():
+        if self.TECHNOLOGY == '.NET' and not site.page_cache[site.url].is_dot_net_webforms():
             pt.explanation = 'This site cannot be %s because it is built using .NET technology' % self.NAME
             
             

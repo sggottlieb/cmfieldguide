@@ -1,10 +1,10 @@
 import signatures
-import pkgutil
 import datetime
 
 from django.forms import Form, URLField, BooleanField, ValidationError
 from models import Site, save_as_site_object
 from page_tools import Page
+from signatures import get_platform_names
 
 class SiteForm(Form):
     force = BooleanField(required=False)
@@ -35,19 +35,11 @@ class SiteForm(Form):
         
             self.site = save_as_site_object(home_page)
             
-            for platform_name in self.get_platform_names():
+            for platform_name in get_platform_names():
                 signature = __import__('cmfieldguide.cmsdetector.signatures.' + platform_name, 
                     fromlist='Signature').Signature(self.site)
         
         return url
     
-    def get_platform_names(self):
-
-        names = []
-
-        package = signatures
-        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
-            names.append(modname)
-
-        return names
+    
     
