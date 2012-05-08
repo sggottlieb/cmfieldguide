@@ -30,4 +30,13 @@ class Signature(BaseSignature):
         else:
             return 0
 
+    def test_has_uploaded_styles_path(self, site):
+        """
+        Look for the standard elcomCMS path to CSS
+        """
+
+        if site.home_page.contains_pattern("/UserUploadedStyles/"):
+            return 1
+        else:
+            return 0
             
