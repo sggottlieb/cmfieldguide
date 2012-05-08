@@ -59,8 +59,11 @@ class Page(object):
 
     @property
     def title(self):
-        if not self._title:
-            self._title = self.parsed_html.title.string
+        if not self._title and self.parsed_html:
+            try:
+                self._title = self.parsed_html.head.title.string
+            except AttributeError:
+                self._title = ''
         
         return self._title
 
