@@ -95,8 +95,10 @@ class BaseSignature(object):
             pt.confidence = (confidence_score/float(test_count)) * 100
         
             
-            if pt.confidence > 75:
+            if pt.confidence >= 75:
                 pt.explanation = 'This site is probably running %s' % self.NAME
+            elif pt.confidence >= 50:
+                pt.explanation = 'This site might be running %s' % self.NAME
             else:
                 pt.explanation = 'This site is probably not running  %s' % self.NAME
         
