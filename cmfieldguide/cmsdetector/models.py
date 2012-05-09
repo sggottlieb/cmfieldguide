@@ -100,7 +100,7 @@ class Site(models.Model):
         return self.page_cache[self.url_stem]    
 
     def platforms(self):
-        return PlatformSiteTest.objects.filter(site=self).order_by('-confidence')
+        return PlatformSiteTest.objects.filter(site=self).order_by('-confidence','platform_name')
 
     page_cache = PageCache()
 
