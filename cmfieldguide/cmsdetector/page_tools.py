@@ -1,3 +1,4 @@
+import socket
 import urllib2, httplib
 import re
 
@@ -50,6 +51,9 @@ class Page(object):
                 self.status_code = 404
             
             except httplib.BadStatusLine:
+                page = None
+                self.status_code = 404
+            except socket.timeout:
                 page = None
                 self.status_code = 404
             
