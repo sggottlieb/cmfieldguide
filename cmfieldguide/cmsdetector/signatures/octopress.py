@@ -25,8 +25,9 @@ class Signature(BaseSignature):
         """
         Octopress ships with an octopress.js file
         """
+        octojs = site.url.rstrip('/') + '/javascripts/octopress.js'
         
-        if site.page_cache[site.url + '/javascripts/octopress.js'].contains_pattern('getNav'):
+        if site.page_cache[octojs].contains_pattern('getNav'):
             return 1
         else:
             return 0
