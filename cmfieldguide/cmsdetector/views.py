@@ -28,7 +28,7 @@ def index(request):
         {'form':form,
          'site':site,
          'media_root': settings.STATIC_ROOT,
-         'next': request.get_full_path()
+         'next': request.get_full_path().rstrip('&force=on')
         },
         context_instance=RequestContext(request))
         
