@@ -31,8 +31,6 @@ class Signature(BaseSignature):
         
         if login_page.status_code != 404 and login_page.has_matching_tag('input', { 'name': 'mgnlUserId'} ):
             return 1
-        elif login_page.status_code in (403,301):
-            return 1
         else:
             return 0
     
