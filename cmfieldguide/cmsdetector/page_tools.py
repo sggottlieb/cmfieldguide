@@ -1,4 +1,4 @@
-import urllib2
+import urllib2, httplib
 import re
 
 class PageCache(dict):
@@ -45,16 +45,27 @@ class Page(object):
 
             try:
                 page = urllib2.urlopen(url, timeout=3)
-            except urllib2.HTTPError, error:
+            except urllib2.URLError:
+                page = None
+                self.status_code = 404
+            
+            except httplib.BadStatusLine:
+                page = None
+                self.status_code = 404
+            
+            except urllib2.HTTPError:
                 page = error
+                
             
             if page:
                 self.status_code = page.getcode()
                 self.headers = page.headers
                 self.get_url = page.geturl()
-
-                for line in page.readlines():
-                    self.html += line    
+                try:
+                    for line in page.readlines():
+                        self.html += line
+                except timeout:
+                    pass
                 page.close()
 
     @property

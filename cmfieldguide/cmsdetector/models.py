@@ -55,7 +55,7 @@ class TestResult(models.Model):
             self.test_run.site.date_time.year)
 
 class Site(models.Model):
-    url = models.CharField(max_length=100)
+    url = models.CharField(max_length=250)
     title = models.CharField(max_length=200)
     html = models.TextField(blank=True, null=True)
     status_code = models.IntegerField()
