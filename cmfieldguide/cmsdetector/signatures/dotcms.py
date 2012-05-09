@@ -27,10 +27,12 @@ class Signature(BaseSignature):
         
         """
         
+        dot_url = site.url.rstrip('/') + '/index.dot'
+        
         if site.url.endswith('.dot'):
             return 1
-        elif site.page_cache[site.url + '/index.dot'].status_code != 404 \
-            and site.page_cache[site.url + '/index.dot'].title == site.home_page.title:
+        elif site.page_cache[dot_url].status_code == 200 \
+            and site.page_cache[dot_url].get_url == dot_url:
             return 1
         else:
             return 0
