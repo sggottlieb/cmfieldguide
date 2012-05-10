@@ -45,7 +45,11 @@
                 <td>{{platform.platform_name}}</td>
                 <td><a href="{{platform.platform_website}}">{{platform.platform_website}}</a></td>
                 <td>
+                    {% if platform.confidence < 0%}
+                    Definitely not
+                    {% else %}
                     {{platform.confidence}}
+                    {% endif %}
                     <form action="{% url platform_reject id=platform.id %}" method="POST">{% csrf_token %}
                     
                     

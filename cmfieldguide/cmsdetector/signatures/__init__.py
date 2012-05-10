@@ -74,10 +74,12 @@ class BaseSignature(object):
         
         if self.TECHNOLOGY == '.NET' and not site.page_cache[site.url].is_dot_net_webforms():
             pt.explanation = 'This site cannot be %s because it is not built using .NET technology' % self.NAME
+            pt.confidence = -1
             
             
         elif self.TECHNOLOGY not in ('PHP','Baked') and site.page_cache[site.url].has_php_credits():
             pt.explanation = 'This site cannot be %s because it is built using PHP technology' % self.NAME
+            pt.confidence = -1
             
         
         else:
