@@ -79,6 +79,8 @@ class Page(object):
                 self._title = self.parsed_html.head.title.string
             except AttributeError:
                 self._title = ''
+        elif not self._title:
+            self._title = ''
         
         return self._title
 
