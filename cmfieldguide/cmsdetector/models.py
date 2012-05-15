@@ -6,7 +6,7 @@ def save_as_site_object(page):
     if page.url:
         site = Site.objects.create(
             url = page.url,
-            title = page.title,
+            title = page.title and page.title or 'none',
             status_code = page.status_code,
             headers = pickle.dumps(page.headers),
             geturl = page.get_url,
