@@ -3,7 +3,7 @@ This signature containts test to see if the site is running on Tridion.
 """
 __author__ = "Seth Gottlieb"
 __copyright__ = "CM Fieldguide"
-__credits__ = ["Seth Gottlieb",]
+__credits__ = ["Adriaan Bloem",]
 __license__ = "Unlicense"
 __version__ = "0.1"
 __maintainer__ = "Seth Gottlieb"
