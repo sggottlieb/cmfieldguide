@@ -35,15 +35,13 @@
         <table>
             <tr>
                 <th>Platform</th>
-                <th>Website</th>
                 <th>Confidence</th>
                 <th>Tests</th>
                 
             </tr>
         {% for platform in site.platforms %}
             <tr>
-                <td>{{platform.platform_name}}</td>
-                <td><a href="{{platform.platform_website}}">{{platform.platform_website}}</a></td>
+                <td><a href="{{platform.platform_website}}">{{platform.platform_name}}</a></td>
                 <td>
                     {% if platform.confidence < 0%}
                     Definitely not
