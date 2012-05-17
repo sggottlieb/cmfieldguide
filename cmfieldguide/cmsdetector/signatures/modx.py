@@ -21,12 +21,13 @@ class Signature(BaseSignature):
     KNOWN_POSITIVE = 'http://modx.com/'
     TECHNOLOGY = 'PHP'
 
-    def test_has_css_version_querystring(self, site):
+    def test_has_login_under_manager(self, site):
         """
-        Modx compresses and versions its style sheets.  It takes a querystring parameter to determine what version.
+        Many Modx sites have the backend under "/manager."  If you go to this page, you will
+        get a login form that will probably say Modx.
         """
         
-        if site.home_page.has_matching_tag('link', {'rel':'stylesheet','href':'\.css\?v=[0-9]'}):
+        if site.page_cache[site.url_stem + "/manager"].contains_pattern('modx'):
             return 1
         else:
             return 0
