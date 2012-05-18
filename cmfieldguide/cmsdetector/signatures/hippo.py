@@ -17,7 +17,7 @@ class Signature(BaseSignature):
 
     NAME = 'Hippo CMS'
     WEBSITE = 'http://www.onehippo.com/en/products/cms'
-    KNOWN_POSITIVE = 'www.onehippo.com'
+    KNOWN_POSITIVE = 'http://www.onehippo.com'
     TECHNOLOGY = 'JAVA'
 
     def test_binaries_file_paths(self, site):
