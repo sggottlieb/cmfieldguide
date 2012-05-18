@@ -1,5 +1,5 @@
 """
-This signature containts test to see if the site is running on Magnolia.
+This signature containts test to see if the site is running on Adobe CQ.
 """
 __author__ = "Seth Gottlieb"
 __copyright__ = "CM Fieldguide"
