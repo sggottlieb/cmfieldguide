@@ -18,7 +18,7 @@ class Signature(BaseSignature):
     
     NAME = 'Modx'
     WEBSITE = 'http://modx.com/'
-    KNOWN_POSITIVE = 'http://modx.com/'
+    KNOWN_POSITIVE = 'http://www.carlosboozer5.com/'
     TECHNOLOGY = 'PHP'
 
     def test_has_login_under_manager(self, site):
