@@ -68,7 +68,7 @@ class Page(object):
                 try:
                     for line in page.readlines():
                         self.html += line
-                except timeout:
+                except socket.timeout:
                     pass
                 page.close()
 
