@@ -32,3 +32,12 @@ class Signature(BaseSignature):
         else:
             return 0
         
+    def test_has_umbraco_header(self, site):
+        """
+        New Umbraco deployments have a header that shows the Umbraco version.
+        """
+        
+        if site.home_page.has_header('X-Umbraco-Version'):
+            return 1
+        else:
+            return 0

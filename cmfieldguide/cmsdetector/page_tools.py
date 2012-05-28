@@ -132,7 +132,15 @@ class Page(object):
                 return False
 
         return True
-
+    
+    def has_header(self,header_string):
+        """
+        Returns true if the response comes with a header
+        """
+        
+        return header_string in self.headers
+        
+    
 
     def is_dot_net_webforms(self):
         """
