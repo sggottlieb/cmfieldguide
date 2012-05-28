@@ -30,4 +30,15 @@ class Signature(BaseSignature):
         else:
             return 0
             
+    def test_has_asmx_refs(self,site):
+        """
+        By default, Sitecore serves images with an .asmx extension stored in a /~/media directory
+        """
+
+        if site.home_page.has_matching_tag('img',{'src':'^/~/.*\.ashx'}):
+            return 1
+        else:
+            return 0
+    
+    
     
