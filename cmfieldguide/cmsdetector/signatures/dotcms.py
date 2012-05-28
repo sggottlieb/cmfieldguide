@@ -27,13 +27,9 @@ class Signature(BaseSignature):
         
         """
         
-        dot_url = site.url.rstrip('/') + '/index.dot'
-        
-        if site.url.endswith('.dot'):
-            return 1
-        elif site.page_cache[dot_url].status_code == 200 \
-            and site.page_cache[dot_url].get_url == dot_url:
+        if site.home_page.contains_pattern('\.dot'):
             return 1
         else:
             return 0
-    
+        
+        
