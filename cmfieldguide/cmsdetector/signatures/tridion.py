@@ -28,7 +28,7 @@ class Signature(BaseSignature):
         
         if site.home_page.has_matching_tag('img', {'tcmuri':'tcm'}):
             return 1
-        elif site.home_page.has_matching_tag('img', {'src':'tcm'}):
+        elif site.home_page.has_matching_tag('img', {'src':'tcm[0-9]'}):
             return 1
         else:
             return 0
