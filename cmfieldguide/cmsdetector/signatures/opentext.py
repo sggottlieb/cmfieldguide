@@ -19,7 +19,7 @@ class Signature(BaseSignature):
     NAME = 'OpenText Web Site Management'
     WEBSITE = 'http://websolutions.opentext.com'
     KNOWN_POSITIVE = 'http://websolutions.opentext.com'
-    TECHNOLOGY = '.NET'
+    TECHNOLOGY = 'BAKED'
 
     def test_has_identifying_publish_tag(self, site):
         """
