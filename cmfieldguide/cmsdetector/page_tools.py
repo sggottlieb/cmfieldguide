@@ -1,5 +1,5 @@
 import socket
-import urllib2, httplib
+import urllib2, httplib, ssl
 import re
 
 class PageCache(dict):
@@ -54,6 +54,9 @@ class Page(object):
                 page = None
                 self.status_code = 404
             except socket.timeout:
+                page = None
+                self.status_code = 404
+            except ssl.SSLError:
                 page = None
                 self.status_code = 404
             
