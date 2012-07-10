@@ -26,7 +26,7 @@ class Signature(BaseSignature):
         SharePoint has a distinct error page under /_layouts/error.aspx.
         """
         
-        if site.page_cache[site.url_stem+'/_layouts/error.aspx'].contains_pattern('Troubleshoot issues with Microsoft SharePoint Foundation'):
+        if site.page_cache[site.url_stem+'/_layouts/error.aspx'].contains_pattern('SharePoint'):
             return 1
         else:
             return 0
