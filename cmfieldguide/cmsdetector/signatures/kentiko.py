@@ -29,4 +29,13 @@ class Signature(BaseSignature):
         else:
             return 0
             
-    
+    def test_has_kentico_login_page(self, site):
+        """
+        Kentico sites often have a login page under /CMSPages/logon.aspx
+        """
+
+        if site.page_cache[site.url_stem + '/CMSPages/logon.aspx'].has_matching_tag(tag_name='input',
+                attributes={'name':'Login1\$UserName'}):
+            return 1
+        else:
+            return 0
