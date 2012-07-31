@@ -36,7 +36,7 @@ class TestPage(TestCase):
         """
         
         page = Page('http://www.contenthere.net')
-        self.assertTrue(page.has_matching_tag('div', {'id':'post', 'class':'post'}))
+        self.assertTrue(page.has_matching_tag('div', {'id':'header', 'class':'row'}))
         self.assertFalse(page.has_matching_tag('div', {'id':'content', 'class':'foo'}))
         
         
