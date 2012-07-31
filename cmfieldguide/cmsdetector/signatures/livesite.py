@@ -31,3 +31,14 @@ class Signature(BaseSignature):
         else:
             return 0
             
+    def test_has_iw_component(sefl, site):
+        """
+        TeamSite's uses the class iw_component to identify LiveSite component divs.
+        """
+
+        if site.home_page.has_matching_tag('div', {'class': 'iw_component'}):
+            return 1
+        else:
+            return 0
+
+            
