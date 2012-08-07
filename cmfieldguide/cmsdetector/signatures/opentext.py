@@ -22,6 +22,10 @@ class Signature(BaseSignature):
     TECHNOLOGY = 'BAKED'
 
     def test_has_identifying_publish_tag(self, site):
+        """
+        RedDot tends to inject comments that identify what version was used.
+        """
+
         if site.home_page.contains_pattern("<!--\sPageID\s\d{1,6}\s-\spublished by RedDot"):
             """
             *Some* sites running version 7.x to 9.x of OpenText Web Site Management (formerly RedDot / RedDot Solutions) will contain this
