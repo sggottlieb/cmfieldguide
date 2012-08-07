@@ -20,6 +20,16 @@ class Signature(BaseSignature):
     WEBSITE = 'http://expressionengine.com/'
     KNOWN_POSITIVE = 'http://expressionengine.com/'
     TECHNOLOGY = 'PHP'
+	
+	def test_has_ee_login(self, site):
+        """
+        By default, Expression Engine ships with a login page at /admin.php
+        """
+        
+        if site.page_cache[site.url_stem + '/admin.php'].contains_pattern('http://expressionengine.com'):
+            return 1
+        else:
+            return 0
 
     def test_has_css_loader_script(self, site):
         """
