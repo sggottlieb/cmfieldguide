@@ -37,15 +37,7 @@ class Signature(BaseSignature):
         ?css=something.css
         """
         
-        passed_url = site.url.replace('.','\.')
-        root_url = site.url_stem.replace('.','\.')
-        get_url = site.geturl.replace('.','\.')
-        
-        if site.home_page.has_matching_tag('link', {'rel':'stylesheet','href': passed_url +'/\?css=\w+[/\.]'}):
-            return 1
-        elif site.home_page.has_matching_tag('link', {'rel':'stylesheet','href': root_url +'/\?css=\w+[/\.]'}):
-            return 1
-        elif site.home_page.has_matching_tag('link', {'rel':'stylesheet','href': get_url +'/\?css=\w+[/\.]'}):
+        if site.home_page.has_matching_tag('link', {'rel':'stylesheet','href': '/\?css=\w+[\.|/]'}):
             return 1
         else:
             return 0
